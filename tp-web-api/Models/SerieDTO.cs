@@ -1,6 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
-
-namespace tp_web_api.Models
+﻿
+namespace SerieInfo.API.Models
 {
     public class SerieDTO
     {
@@ -8,7 +7,7 @@ namespace tp_web_api.Models
         public string Nombre { get; set; } = string.Empty;
         public string? Rating { get; set; }
 
-        public ICollection<PersonajesDTO> Personajes { get; set; } = new List<PersonajesDTO>();
+        public ICollection<PersonajeDTO> Personajes { get; set; } = new List<PersonajeDTO>();
 
         public int CantidadPersonajes
         {

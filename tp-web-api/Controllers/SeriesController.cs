@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using tp_web_api.Models;
+using tp_web_api.API;
+using SerieInfo.API.Models;
 
 namespace tp_web_api.API.Controllers
 {

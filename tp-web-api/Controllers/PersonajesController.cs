@@ -1,24 +1,25 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using tp_web_api.Models;
+using tp_web_api.API;
+using SerieInfo.API.Models;
 
-namespace tp_web_api.API.Controllers
+namespace SerieInfo.API.Controllers
 {
     [ApiController]
     [Route("api/series/{idSerie}/personajes")]
     public class PersonajesController : ControllerBase
     {
         [HttpGet]
-        public ActionResult<IEnumerable<PersonajesDTO>> GetPersonajes(int idSeries)
+        public ActionResult<IEnumerable<PersonajeDTO>> GetPersonajes(int idSerie)
         {
-            var serie = SeriesData.InstanciaActual.Series.FirstOrDefault(x => x.Id == idSeries);
+            var serie = SeriesData.InstanciaActual.Series.FirstOrDefault(x => x.Id == idSerie);
             if (serie == null)
                 return NotFound();
 
             return Ok(serie.Personajes);
         }
 
-        [HttpGet("{idPersonajes}", Name = "GetPersonajes")]
-        public ActionResult<PersonajesDTO> GetPuntosDeInteres(int idSerie, int idPersonaje)
+        [HttpGet("{idPersonaje}", Name = "GetPersonajes")]
+        public ActionResult<PersonajeDTO> GetPersonajes(int idSerie, int idPersonaje)
         {
             var seriex = SeriesData.InstanciaActual.Series.FirstOrDefault(x => x.Id == idSerie);
 
@@ -34,7 +35,7 @@ namespace tp_web_api.API.Controllers
         }
 
         [HttpPost]
-        public ActionResult<PersonajesDTO> CrearPuntoDeInteres(int idSerie, PersonajeParaCreacionDTO personaje)
+        public ActionResult<PersonajeDTO> CrearPersonaje(int idSerie, PersonajeParaCreacionDTO personaje)
         {
             var serie = SeriesData.InstanciaActual.Series.FirstOrDefault(c => c.Id == idSerie);
             if (serie is null)
@@ -42,11 +43,11 @@ namespace tp_web_api.API.Controllers
                 return NotFound();
             }
 
-            var idMaximoPuntosDeInteres = SeriesData.InstanciaActual.Series.SelectMany(c => c.Personajes).Max(p => p.Id);
+            var idMaximoPersonajes = SeriesData.InstanciaActual.Series.SelectMany(c => c.Personajes).Max(p => p.Id);
 
-            var nuevoPersonaje = new PersonajesDTO
+            var nuevoPersonaje = new PersonajeDTO
             {
-                Id = ++idMaximoPuntosDeInteres,
+                Id = ++idMaximoPersonajes,
                 Nombre = personaje.Nombre,
                
             };
@@ -83,14 +84,13 @@ namespace tp_web_api.API.Controllers
 
 
         [HttpDelete("{idPersonaje}")]
-        public ActionResult DeletePointOfInterest(int idSerie, int idPersonaje)
+        public ActionResult DeleteCharacter(int idSerie, int idPersonaje)
         {
             var serie = SeriesData.InstanciaActual.Series.FirstOrDefault(c => c.Id == idSerie);
             if (serie is null)
                 return NotFound();
 
-            var personajeAEliminar = serie.Personajes
-                .FirstOrDefault(p => p.Id == idPersonaje);
+            var personajeAEliminar = serie.Personajes.FirstOrDefault(p => p.Id == idPersonaje);
             if (personajeAEliminar is null)
                 return NotFound();
 
